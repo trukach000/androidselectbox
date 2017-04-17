@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="com.github.trukach000.androidselectbox.activityTheme" format="reference" />
+    <attr name="com.github.trukach000.androidselectbox.actionBarTheme" format="reference" />
+    <attr name="com.github.trukach000.androidselectbox.toolbarPopupBarTheme" format="reference" />
+
+
+
+    <declare-styleable name="SelectBoxControl">
+        <attr name="emptySelectedTitle" format="string" />
+        <attr name="activityTitle" format="string" />
+        <attr name="requestCode" format="integer" />
+    </declare-styleable>
+</resources>

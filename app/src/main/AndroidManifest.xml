@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.github.trukach000.androidselectbox">
+
+    <application>
+        <activity
+            android:theme="@style/Selectbox.NoActionBar"
+            android:name=".WidgetSelectActivity"/>
+    </application>
+
+</manifest>
