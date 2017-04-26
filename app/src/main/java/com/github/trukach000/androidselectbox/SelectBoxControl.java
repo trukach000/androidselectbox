@@ -5,11 +5,12 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class SelectBoxControl extends AppCompatTextView {
      * Selected item id, if nothing selected it is null
      */
     private String mSelectedItemId = null;
-    private List<ISelectableIItem> data = new ArrayList<ISelectableIItem>();
+    private List<ISelectableIItem> mData = new ArrayList<ISelectableIItem>();
 
 
     public SelectBoxControl(Context context) {
@@ -75,9 +76,9 @@ public class SelectBoxControl extends AppCompatTextView {
 
     private void initAttrs(Context context, AttributeSet attrs) {
         if (attrs == null) {
-            mEmptySelectedTitle = "N1othing selected";
+            mEmptySelectedTitle = "Nothing selected";
             mActivityTitle = "Select";
-            mRequestCode = 1234;
+            mRequestCode = DEFAULT_REQUEST_CODE;
         } else {
             TypedArray a = context.getTheme().obtainStyledAttributes(
                     attrs,
@@ -93,7 +94,7 @@ public class SelectBoxControl extends AppCompatTextView {
                 if (mActivityTitle == null || mActivityTitle.isEmpty()) {
                     mActivityTitle = "Select";
                 }
-                mRequestCode = a.getInt(R.styleable.SelectBoxControl_requestCode, 1234);
+                mRequestCode = a.getInt(R.styleable.SelectBoxControl_requestCode, DEFAULT_REQUEST_CODE);
             } finally {
                 a.recycle();
             }
@@ -106,11 +107,15 @@ public class SelectBoxControl extends AppCompatTextView {
             @Override
             public void onClick(View view) {
                 if (mParentFragment != null) {
-                    mParentFragment.startActivityForResult(fillIntentForSelectActivity(), DEFAULT_REQUEST_CODE);
+                    Activity act = getActivity();
+                    if (act != null) {
+                        mParentFragment.startActivityForResult(fillIntentForSelectActivity(), mRequestCode);
+                        getActivity().overridePendingTransition(R.anim.right_in,R.anim.left_out);
+                    }
                 } else {
                     Activity act = getActivity();
                     if (act != null) {
-                        act.startActivityForResult(fillIntentForSelectActivity(), DEFAULT_REQUEST_CODE);
+                        act.startActivityForResult(fillIntentForSelectActivity(), mRequestCode);
                     }
                 }
             }
@@ -121,7 +126,8 @@ public class SelectBoxControl extends AppCompatTextView {
         Intent intent = new Intent(getContext(), WidgetSelectActivity.class);
         intent.putExtra(KEY_ACTIVITY_TITLE, mActivityTitle);
         intent.putExtra(KEY_SELECTED_ITEM_ID, mSelectedItemId);
-        intent.putParcelableArrayListExtra(KEY_DATA_ARRAY, (ArrayList<ISelectableIItem>) data);
+        intent.setExtrasClassLoader(mData.getClass().getClassLoader());
+        intent.putParcelableArrayListExtra(KEY_DATA_ARRAY, (ArrayList<ISelectableIItem>) mData);
         return intent;
     }
 
@@ -137,11 +143,11 @@ public class SelectBoxControl extends AppCompatTextView {
         this.mParentFragment = frg;
     }
 
-    public void setData(List<ISelectableIItem> data) {
-        if(data == null) {
-            data = new ArrayList<>();
+    public void setData(List<ISelectableIItem> mData) {
+        if(mData == null) {
+            mData = new ArrayList<>();
         }
-        this.data = data;
+        this.mData = mData;
     }
 
     public void setRequestCode(int mRequestCode) {
@@ -149,13 +155,13 @@ public class SelectBoxControl extends AppCompatTextView {
     }
 
     /**
-     * Set item with that id as the selected one if data array contains it
+     * Set item with that id as the selected one if mData array contains it
      * do not rise ItemSelectedListener.onItemSelect
      * @param selectedItemId
      * @return
      */
     public boolean selectItemById(String selectedItemId) {
-        for (ISelectableIItem it : data) {
+        for (ISelectableIItem it : mData) {
             if (it.getId().equals(selectedItemId)) {
                 setText(it.getTitle());
                 this.mSelectedItemId = selectedItemId;
@@ -175,10 +181,13 @@ public class SelectBoxControl extends AppCompatTextView {
     }
 
     public void submit(int requestCode, int resultCode, Intent data) {
+        Log.d("RES","Request code :" + requestCode);
+        Log.d("RES","Result code :" + resultCode);
         if (requestCode == this.mRequestCode) {
             if (resultCode == Activity.RESULT_OK) {
                 String selectedId = data.getStringExtra(KEY_SELECTED_ITEM_ID);
-                if(selectedId == null) {
+                Log.d("RES","selectedId :" + selectedId);
+                if(selectedId != null) {
                     if (selectItemById(selectedId)) {
                         if (selectedListener != null) {
                             selectedListener.onItemSelect(selectedId);

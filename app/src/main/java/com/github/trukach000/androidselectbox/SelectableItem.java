@@ -53,7 +53,6 @@ public class SelectableItem implements ISelectableIItem{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-
         parcel.writeString(id);
         parcel.writeString(title);
     }

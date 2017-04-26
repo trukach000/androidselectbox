@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/main_coordinator"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="com.github.trukach000.androidselectbox.WidgetSelectActivity">
-
-<android.support.design.widget.AppBarLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_coordinator"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:theme="@style/Selectbox.AppBarOverlay">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/Selectbox.PopupOverlay" />
-
-</android.support.design.widget.AppBarLayout>
-
-<LinearLayout
     android:layout_height="match_parent"
-    android:layout_width="wrap_content"
-    >
+    android:fitsSystemWindows="true"
+    tools:context="com.github.trukach000.androidselectbox.WidgetSelectActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:theme="@style/Selectbox.Child.AppBarOverlay">
 
-</LinearLayout>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Selectbox.Child.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="?attr/com.github.trukach000.androidselectbox.listBackground"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>

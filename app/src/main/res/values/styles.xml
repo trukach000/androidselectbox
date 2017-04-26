@@ -3,13 +3,18 @@
 
     <style name="Selectbox" parent="Theme.AppCompat.Light.DarkActionBar"/>
 
-    <style name="Selectbox.NoActionBar" parent="Selectbox">
+
+    <style name="Selectbox.Child">
+        <item name="com.github.trukach000.androidselectbox.listBackground">@color/listBackground</item>
+    </style>
+
+    <style name="Selectbox.Child.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Selectbox.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="Selectbox.Child.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="Selectbox.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark"/>
+    <style name="Selectbox.Child.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark"/>
 
 </resources>
